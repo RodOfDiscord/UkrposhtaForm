@@ -1,0 +1,25 @@
+button.custom-button {
+  display: block;
+  background-color: white;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+button.custom-button:hover {
+  box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.5);
+}
+
+button.custom-button .image-content {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+button.active {
+  box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.5);
+}

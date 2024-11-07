@@ -1,0 +1,11 @@
+input.custom-input {
+  border: 2px solid lightgray;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+input.custom-input:focus {
+  border: 2px solid lightgray;
+  border-radius: 4px;
+  outline: none;
+}
