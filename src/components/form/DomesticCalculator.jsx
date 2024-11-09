@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import schema from "./schema";
 import CheckBox from "../checkbox/CheckBox";
 import Input from "../textInput/TextInput";
 import Button from "../button/Button";
@@ -9,15 +11,39 @@ function DomesticCalculator() {
   const [startLocationValue, setStartLocationValue] = useState("");
   const [DestinationValue, setDestination] = useState("");
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  console.log(errors);
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
+  useEffect(() => {
+    switch (activeButtonIndex) {
+      case 0:
+        reset();
+        setValue("deliveryType", "parcel");
+        break;
+      case 1:
+        reset();
+        setValue("deliveryType", "document");
+        break;
+      case 2:
+        reset();
+        setValue("deliveryType", "letter");
+        break;
+    }
+  }, [activeButtonIndex, setValue, reset]);
   return (
     <>
-      <form style={{ with: "300px" }} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        style={{ with: "300px" }}
+        onSubmit={handleSubmit((data) => console.log(data))}
+      >
         <h3>1. Маршрут</h3>
         <div className={styles["item-container"]}>
           <Autocomplete
@@ -82,7 +108,7 @@ function DomesticCalculator() {
                   </div>
                   <div
                     style={{
-                      margin: "1em",
+                      marginTop: "1em",
                     }}
                     className={styles["item-container"]}
                   >
@@ -110,12 +136,65 @@ function DomesticCalculator() {
                 </>
               );
             case 1:
-              return <Input placeholder="fadfdsfds"></Input>;
+              setValue("weight", 1);
+              setValue("maxSide", 35);
+              setValue("declaredPrice", 500);
+
+              return (
+                <>
+                  <div className={styles["item-container"]}>
+                    <Input
+                      disabled
+                      {...register("weight")}
+                      placeholder="кг"
+                    ></Input>
+                    <Input
+                      disabled
+                      {...register("maxSide")}
+                      placeholder="см"
+                    ></Input>
+                    <Input
+                      disabled
+                      {...register("declaredPrice")}
+                      placeholder="грн"
+                    ></Input>
+                  </div>
+                  <div
+                    style={{ marginTop: "1em" }}
+                    className={styles["item-container"]}
+                  >
+                    <CheckBox
+                      {...register("documentBack")}
+                      content="Зворотня доставка документів"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("withDeliveryNotification")}
+                      content="Рекомендоване повідомленя про вручення"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("deliveryToAddress")}
+                      content="Доставка на адресу"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("listOfEnclosedItems")}
+                      content="Перевірка відповідності вкладення поштового відправлення опису вкладення"
+                    ></CheckBox>
+                  </div>
+                </>
+              );
             case 2:
-              return <CheckBox content="adsdasdsa"></CheckBox>;
+              return (
+                <>
+                  <Input {...register("weight")} placeholder="кг"></Input>
+                  <CheckBox
+                    content={"З повідомленням про вручення"}
+                    {...register("withDeliveryNotification")}
+                  ></CheckBox>
+                </>
+              );
           }
         })()}
-        <input type="submit" value={"asdsa"} />
+        <input type="submit" value={"Розрахувати вартість"} />
       </form>
     </>
   );
