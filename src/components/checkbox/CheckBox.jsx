@@ -1,26 +1,14 @@
-import PropTypes from "prop-types";
 import styles from "./styles.module.css";
+import { forwardRef } from "react";
 
-function CheckBox({ value, onChange, content, style }) {
+const CheckBox = forwardRef(function CheckBox({ ...checkBoxProps }, ref) {
   return (
     <label className={styles.container}>
-      <input
-        value={value}
-        onChange={onChange}
-        style={{ ...style }}
-        type="checkbox"
-      />
-      {content}
+      <input ref={ref} {...checkBoxProps} type="checkbox" />
+      {checkBoxProps.content}
       <span className={styles.checkmark}></span>
     </label>
   );
-}
-
-CheckBox.propTypes = {
-  value: PropTypes.string,
-  content: PropTypes.string,
-  onChange: PropTypes.func,
-  style: PropTypes.object,
-};
+});
 
 export default CheckBox;

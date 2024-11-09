@@ -9,16 +9,15 @@ function DomesticCalculator() {
   const [startLocationValue, setStartLocationValue] = useState("");
   const [DestinationValue, setDestination] = useState("");
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
-  const { register } = useForm();
+  const { register, handleSubmit } = useForm();
 
-  const onSubmit = (d) => {
-    d.preventDefault();
-    console.log(JSON.stringify(d));
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   return (
     <>
-      <form style={{ with: "300px" }} onSubmit={onSubmit}>
+      <form style={{ with: "300px" }} onSubmit={handleSubmit(onSubmit)}>
         <h3>1. Маршрут</h3>
         <div className={styles["item-container"]}>
           <Autocomplete
@@ -74,9 +73,12 @@ function DomesticCalculator() {
               return (
                 <>
                   <div className={styles["item-container"]}>
-                    <Input placeHolder="кг"></Input>
-                    <Input placeHolder="см"></Input>
-                    <Input placeHolder="грн"></Input>
+                    <Input {...register("weight")} placeholder="кг"></Input>
+                    <Input {...register("maxSide")} placeholder="см"></Input>
+                    <Input
+                      {...register("declaredPrice")}
+                      placeholder="грн"
+                    ></Input>
                   </div>
                   <div
                     style={{
@@ -84,16 +86,31 @@ function DomesticCalculator() {
                     }}
                     className={styles["item-container"]}
                   >
-                    <CheckBox content="Виклик кур'єра"></CheckBox>
-                    <CheckBox content="Доставка кур'єром"></CheckBox>
-                    <CheckBox content="СМС про отримання"></CheckBox>
-                    <CheckBox content="Рекомендоване повідомлення про вручення"></CheckBox>
-                    <CheckBox content="Зворотня доставка документів"></CheckBox>
+                    <CheckBox
+                      {...register("courier")}
+                      content="Виклик кур'єра"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("courierDelivery")}
+                      content="Доставка кур'єром"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("deliverySms")}
+                      content="СМС про отримання"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("withDeliveryNotification")}
+                      content="Рекомендоване повідомлення про вручення"
+                    ></CheckBox>
+                    <CheckBox
+                      {...register("documentBack")}
+                      content="Зворотня доставка документів"
+                    ></CheckBox>
                   </div>
                 </>
               );
             case 1:
-              return <Input placeHolder="fadfdsfds"></Input>;
+              return <Input placeholder="fadfdsfds"></Input>;
             case 2:
               return <CheckBox content="adsdasdsa"></CheckBox>;
           }
