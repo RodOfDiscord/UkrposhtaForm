@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { forwardRef } from "react";
+import { useState, forwardRef } from "react";
 import styles from "./styles.module.css";
 const Autocomplete = forwardRef(function Autocomplete({ ...inputProps }, ref) {
   const [filteredOptions, setFilteredOptions] = useState([]);

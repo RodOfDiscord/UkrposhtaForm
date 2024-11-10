@@ -16,13 +16,16 @@ function DomesticCalculator() {
     handleSubmit,
     setValue,
     reset,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "all",
   });
   console.log(errors);
 
   useEffect(() => {
+    trigger();
     switch (activeButtonIndex) {
       case 0:
         reset();
@@ -37,7 +40,7 @@ function DomesticCalculator() {
         setValue("deliveryType", "letter");
         break;
     }
-  }, [activeButtonIndex, setValue, reset]);
+  }, [activeButtonIndex, setValue, reset, trigger]);
   return (
     <>
       <form
@@ -194,7 +197,11 @@ function DomesticCalculator() {
               );
           }
         })()}
-        <input type="submit" value={"Розрахувати вартість"} />
+        <input
+          disabled={Object.keys(errors).length !== 0}
+          type="submit"
+          value={"Розрахувати вартість"}
+        />
       </form>
     </>
   );
